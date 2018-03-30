@@ -8,10 +8,11 @@ class MainView extends Component {
 
         this.state = {
             newCard: [],
-            addCardButton: true,
+            addCardButton: false
         }
         this.getBusinessCardPayload = this.getBusinessCardPayload.bind(this);
         this.removeBusinessCard = this.removeBusinessCard.bind(this);
+        this.toggleCreateBusinessCard = this.toggleCreateBusinessCard.bind(this);
     } 
 
 
@@ -22,44 +23,46 @@ class MainView extends Component {
         this.setState({ 
             newCard: newCardInfo
         });
-
+        this.toggleCreateBusinessCard();
     }
 
     removeBusinessCard(index) {
-        const excerciseState = this.state.newCard;
+        const cardState = this.state.newCard;
 
-        excerciseState.splice(index, 1);
+        cardState.splice(index, 1);
 
         this.setState({
-            excercises: excerciseState
+            excercises: cardState
         })
     }
 
-    handleSubmit(e) {
-        e.preventDefault()
-        const sendWorkout = this.state.newCard;
-        this.props.getWorkoutPayload(sendWorkout);
-
+    toggleCreateBusinessCard() {
+        const { addCardButton } = this.state;
+        
         this.setState({
-            newCard: [],
+            addCardButton: !this.state.addCardButton,
         })
     }
+
 
     render() {
         const { addCardButton } = this.state;
         return(
-            <div>
-                <div>
-                    <button 
-                        onClick={() => this.toggle()}
-                    >
-                    </button>
-                        { addCardButton &&
+            <div className="wrapper">
+                <h1>Buisy</h1>
+                <h2>Digital business card...........</h2>
+                <button onClick={() => this.toggleCreateBusinessCard()}>
+                    Add New Business Card
+                </button>
+                { addCardButton &&
+                    <div className={ this.state.addCardButton ? 'display':null}>
+                        { 
                             < AddBusinessCard 
                                 getBusinessCardPayload={this.getBusinessCardPayload} 
                             />
                         }
-                </div>
+                    </div>
+                }
                 <div>
                     {this.state.newCard.map((card, i) =>{
                         return (
